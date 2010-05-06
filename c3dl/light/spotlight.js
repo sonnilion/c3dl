@@ -18,7 +18,7 @@
 */
 c3dl.SpotLight = function()
 {
-	// this will be multiplied by 2 within opengl. 180 is the default opengl 
+	// this will be multiplied by 2 within WebGL. 180 is the default WebGL 
 	// value for cutoff.  So we are starting off which a Positional light 
 	// since there is no light 'cone'.
 	this.cutoff = 180;
@@ -30,7 +30,7 @@ c3dl.SpotLight = function()
 	this.direction = [0,0,-1];
 	
 	// how concentrated is the light?
-	// use the opengl default value of zero to indicate uniform 
+	// use the WebGL default value of zero to indicate uniform 
 	// light distribution.
 	this.exponent = 0;
 

@@ -20,7 +20,7 @@ c3dl.Light = function()
 	// assign names to lights as to make removing them easy.
 	this.name = "unnamed";
 
-	// OpenGL assigns default values to lights.  For example light0 already has some
+	// WebGL assigns default values to lights.  For example light0 already has some
 	// properties which will light the scene.  the other lights are off by default. It
 	// was decided to zero out all the components for all the lights 0-7 to prevent
 	// any confusion.
@@ -49,7 +49,7 @@ c3dl.Light = function()
 		Ambient light does not have a direction or position, but seems to come from 
 		everywhere. If only using ambient light, all objects in the scene would be lit 
 		evenly. Assigning an ambient component to a light can seem strange since lights 
-		typically tend to attenuate. The functionality is simply provided because OpenGL 
+		typically tend to attenuate. The functionality is simply provided because WebGL 
 		supports it. Generally, you should use scene.setAmbientLight(array) to place 
 		ambient light in the scene.
 
@@ -149,7 +149,7 @@ c3dl.Light = function()
 		Ambient light does not have a direction or position, but seems to come from 
 		everywhere. If only using ambient light, all objects in the scene would be lit 
 		evenly. Assigning an ambient component to a light can seem strange since lights 
-		typically tend to attenuate. The functionality is simply provided because OpenGL 
+		typically tend to attenuate. The functionality is simply provided because WebGL 
 		supports it. Generally, you should use scene.setAmbientLight(array) to place 
 		ambient light in the scene.
 		
