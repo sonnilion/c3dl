@@ -1,4 +1,4 @@
-// Tutorial 3: the javascript
+// Tutorial 5: the javascript
 // The models used need to be parsed before the page
 // render. This code will parse the model files
 // and when this complete the parser will call the
@@ -39,6 +39,13 @@ function canvasMain(canvasName){
 
  // Attach renderer to the scene
  scn.setRenderer(renderer);
+ 
+ //Turn ambient lighting off
+ scn.setAmbientLight([0,0,0,0]);
+ 
+ //Turn ambient lighting on to weak gray light
+ //scn.setAmbientLight([0.3,0.3,0.3,1.0]);
+ 
  scn.init(canvasName);
 
  //the isReady() function tests whether or not a renderer
@@ -85,6 +92,22 @@ function canvasMain(canvasName){
 
  // add the callback function
  scn.setUpdateCallback(spinduck);
+ 
+// Positional diffuse
+//var diffuse = new c3dl.PositionalLight();
+//diffuse.setName('diffuse');
+//diffuse.setPosition([0,300,0]);
+//diffuse.setDiffuse([0.1,0.8,0.4,1]);
+//diffuse.setOn(true);
+//scn.addLight(diffuse);
+
+// Directional Diffuse
+  var directional = new c3dl.DirectionalLight();
+  directional.setName('dir');
+  directional.setDirection([-2,3,-5]);
+  directional.setDiffuse([0.7,0.7,0.7,1]);
+  directional.setOn(true);
+  scn.addLight(directional);
 
  // Start the scene
  scn.startScene();

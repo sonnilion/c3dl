@@ -1,4 +1,4 @@
-// Tutorial 3: the javascript
+// Tutorial 7: the javascript
 // The models used need to be parsed before the page
 // render. This code will parse the model files
 // and when this complete the parser will call the
@@ -39,6 +39,9 @@ function canvasMain(canvasName){
 
  // Attach renderer to the scene
  scn.setRenderer(renderer);
+ //Turn ambient lighting off
+ scn.setAmbientLight([0,0,0,0]);
+
  scn.init(canvasName);
 
  //the isReady() function tests whether or not a renderer
@@ -47,8 +50,17 @@ function canvasMain(canvasName){
  //try to attach it to a scene.
  if(renderer.isReady() )
  {
- // Create a Collado object that
- // will contain a imported
+ 
+ //a material with a high red component
+  var demoMat = new c3dl.Material();
+  demoMat.setDiffuse([1,0.1,0.6]);
+  demoMat.setAmbient([0.2,0.4,0.8]);
+  demoMat.setSpecular([0.8,0.8,0.8]);
+  demoMat.setShininess(25);
+
+    
+ // Create a Collada object that
+ // will contain an imported
  // model of something to put
  // in the scene.
  duck = new c3dl.Collada();
@@ -61,7 +73,7 @@ function canvasMain(canvasName){
 
  // Give the duck a bit of a spin on y
  duck.setAngularVel(new Array(0.0, -0.001, 0.0));
-
+ duck.setMaterial(demoMat);
  // Add the object to the scene
  scn.addObjectToScene(duck);
 
@@ -85,7 +97,22 @@ function canvasMain(canvasName){
 
  // add the callback function
  scn.setUpdateCallback(spinduck);
+ 
+ var diffuse = new c3dl.PositionalLight();
+ diffuse.setName('diffuse');
+ diffuse.setPosition([0,300,0]);
+ diffuse.setDiffuse([0.5,0.5,0.5,1]);
+ diffuse.setAmbient([0.4,1,0.4,1]);
+ diffuse.setOn(true);
+ scn.addLight(diffuse);
 
+ var spec = new c3dl.DirectionalLight();
+ spec.setName('spec');
+ spec.setDirection([-2,-10,-20]);
+ spec.setSpecular([1,1,1,1])
+ spec.setOn(true);
+ scn.addLight(spec);
+ 
  // Start the scene
  scn.startScene();
  }
