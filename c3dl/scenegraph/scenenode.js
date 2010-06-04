@@ -249,3 +249,20 @@ c3dl.SceneNode.prototype.rayIntersectsEnclosures = function(rayOrigin, rayDir)
 	c3dl.popMatrix();
 	return passed;
 }
+c3dl.SceneNode.prototype.getAllVerts  = function ()
+{
+  var allverts =[];
+  var numverts = 0;
+  for (var i = 0; i < this.children.length; i++)
+  { 
+    if (this.children[i] instanceof c3dl.SceneNode) {  
+      allverts = allverts.concat(this.children[i].getAllVerts());
+    }
+    else if (this.children[i] instanceof c3dl.Geometry) { 
+      for (var j = 0; j < this.children[i].getPrimitiveSets().length; j++) {
+        allverts = allverts.concat(this.children[i].getPrimitiveSets()[j].getVertices());
+      }
+    }
+  }
+  return allverts;
+}

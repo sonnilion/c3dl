@@ -1,0 +1,55 @@
+﻿<html>
+    <head>
+        <title>BoundingBox</title>
+        <script type="application/javascript" src="../../../c3dl/c3dapi.js" ></script>
+        <script type="application/javascript" src="tester.js"></script>
+    </head>
+    <body>
+        <canvas id="test" style="border: 2px solid blue" width="500" height="500"></canvas>
+            <form>
+        <table>
+        <tr>
+        <th>Box know values</th>
+        </tr>
+        <tr>  
+          <td>Length:</td>
+          <td><input type="text" id="length" /></td> 
+        </tr>
+        <tr>
+      
+          <td>Width:</td>
+          <td><input type="text" id="width" /></td>      
+        </tr>
+        <tr>
+         
+          <td>Hieght:</td>
+          <td><input type="text" id="height" /> </td>
+        </tr>
+        </table>
+        <input type="button" value="Update" onclick="setSize(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('height').value)"/>
+        </form>
+        <form>
+        <table>
+        <tr>
+        <th>Table with unknown values</th>
+        </tr>
+        <tr>  
+          <td>Length:</td>
+          <td><input type="text" id="length2"/></td> 
+        </tr>
+        <tr>
+      
+          <td>Width:</td>
+          <td><input type="text" id="width2"/></td>      
+        </tr>
+        <tr>
+         
+          <td>Hieght:</td>
+          <td><input type="text" id="height2"/> </td>
+        </tr>
+        </table>
+        <input type="button" value="Update" onclick="setSize2(document.getElementById('length2').value, document.getElementById('width2').value, document.getElementById('height2').value)"/>
+        </form>
+    </body>
+</html>
+

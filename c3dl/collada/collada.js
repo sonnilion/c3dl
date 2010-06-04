@@ -19,7 +19,7 @@
 c3dl.Collada = c3dl.inherit(c3dl.Primitive, function() 
 {
 	c3dl._superc(this);
-
+    this.boundingbox = new c3dl.BoundingBox();
 	this.path = null;
 	this.sceneGraph = null;
 });
@@ -207,6 +207,10 @@ c3dl.Collada.prototype.init = function(daePath)
 		// placing collada objects in the manager.
 		c3dl.ColladaQueue.pushBack(this);
 	}
+	if (this.isReady())
+    {
+      this.boundingbox.init(this.sceneGraph.getAllVerts());
+    }
 }
 
 /**
@@ -276,6 +280,7 @@ c3dl.Collada.prototype.scale = function(scaleVec)
 	if( this.isReady())
 	{
 		this.sceneGraph.scale(scaleVec);
+		this.boundingbox.scale(scaleVec);
 	}
 }
 
@@ -480,3 +485,105 @@ c3dl.Collada.prototype.rayIntersectsTriangles = function(rayOrigin, rayDir)
 	c3dl.popMatrix();
 	return result;
 }
+c3dl.Collada.prototype.getHeight = function ()
+{
+  if (this.isReady())
+  {
+    return this.boundingbox.getHeight();
+  }
+}
+c3dl.Collada.prototype.getWidth = function ()
+{
+  if (this.isReady())
+  {
+    return this.boundingbox.getWidth();
+  }
+}
+c3dl.Collada.prototype.getLength = function ()
+{
+  if (this.isReady())
+  {
+    return this.boundingbox.getLength();
+  }
+}
+c3dl.Collada.prototype.setHeight = function (height)
+{ 
+    var curheight = this.getHeight();
+    var scaleVec = [];
+    if (curheight > height) 
+      scaleVec= [1,(1/(curheight/height)),1];
+    else if (curheight < height) 
+      scaleVec = [1,(height/curheight),1];
+    else 
+      scaleVec [1,1,1];
+    this.boundingbox.scale(scaleVec);
+    this.sceneGraph.scale(scaleVec);   
+}
+
+c3dl.Collada.prototype.setLength = function (length)
+{
+    var curlength = this.getLength();
+    var scaleVec = [];
+    if (curlength > length) 
+      scaleVec= [(1/(curlength/length)),1,1];
+    else if (curlength < length) 
+      scaleVec = [(length/curlength),1,1];
+    else 
+      scaleVec [1,1,1];
+    this.boundingbox.scale(scaleVec);
+    this.sceneGraph.scale(scaleVec); 
+}
+
+c3dl.Collada.prototype.setWidth = function (width)
+{
+    var curwidth = this.getWidth();
+    var scaleVec = [];
+    if (curwidth > width) 
+      scaleVec= [1,1,(1/(curwidth/width))];
+    else if (curwidth < width) 
+      scaleVec = [1,1,(width/curwidth)];
+    else 
+      scaleVec [1,1,1];
+    this.boundingbox.scale(scaleVec);
+    this.sceneGraph.scale(scaleVec); 
+}
+
+c3dl.Collada.prototype.setSize = function (length,width,height)
+{
+    length = parseFloat(length);
+    width = parseFloat(width);
+    height= parseFloat(height);
+    var curlength = this.boundingbox.getLength();
+    var curwidth = this.boundingbox.getWidth();
+    var curheight = this.boundingbox.getHeight();
+    var scaleVec = [];
+    var vecL, vecW, vecH;
+    
+    if (curlength > length) 
+      vecL= (1/(curlength/length));
+    else if (curlength < length) 
+      vecL = length/curlength;
+    else 
+    vecL = 1;
+    
+    if (curheight > height) 
+      vecH= (1/(curheight/height));
+    else if (curheight < height) 
+      vecH = (height/curheight);
+    else 
+      vecH = 1;
+
+    if (curwidth > width) 
+      vecW=(1/(curwidth/width));
+    else if (curwidth < width) 
+      vecW=(width/curwidth);
+    else 
+      vecW = 1;
+
+    scaleVec= [vecL,vecH,vecW];
+    
+    this.scale(scaleVec); 
+}
+
+
+
