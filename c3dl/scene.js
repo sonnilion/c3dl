@@ -880,44 +880,43 @@ c3dl.Scene = function()
 	}
 
 	/**
-		Remove a light from the scene. The first light found matching the name 
-		lightName will be removed.
-		
-		@param {String} lightName the name of the light
-	*/
-	this.removeLight = function(lightName)
-	{
-		// There are 2 copies of the light, one in our js code and one in the opengl
-		// state variable.  We need to remove the light object from our list and set
-		// the opengl state variable to all zeros so it will no longer affect the scene.
+   Remove a light from the scene. The first light found matching the name 
+   light or object light will be removed.
+   
+   @param {String || c3dl.Light } light the name of the light or the c3dl object light
+   */
+  this.removeLight = function (light)
+  {
+    // There are 2 copies of the light, one in our js code and one in the opengl
+    // state variable.  We need to remove the light object from our list and set
+    // the opengl state variable to all zeros so it will no longer affect the scene.
+    // first find the index of the light in our array.
+    var lightID = -1;
+    for (var i = 0; i < lightList.length && lightID == -1; i++)
+    {
+      if (lightList[i] && (lightList[i].getName() == light || lightList[i] === light))
+      {
+        lightID = i;
+      }
+    }
 
-		// first find the index of the light in our array.
-		var lightID = -1;
-		for (var i = 0; i < lightList.length && lightID == -1; i++)
-		{
-			if(lightList[i] && lightList[i].getName() == lightName)
-			{
-				lightID = i;
-			}
-		}
-		
-		// now that we have the index, we have to set the corresponding opengl state
-		// to zeros, which will prevent the light from affecting the scene.
-		//
-		if(lightID != -1)
-		{
-			// place a 'hole' in the array. This can later be populated with another light.
-			// don't delete the light, leave it up to the gc, otherwise
-			// the light seems to stay on and can't be removed.		
-			lightList[lightID] = null;
-					
-			// we removed the light from our list, but openGL still has
-			// a light state which needs to be cleared.  Otherwise the
-			// light will still affect the scene.
-			renderer.clearLight(lightID);
-		}
-		return (lightID == -1 ? false: true);
-	}
+    // now that we have the index, we have to set the corresponding opengl state
+    // to zeros, which will prevent the light from affecting the scene.
+    //
+    if (lightID != -1)
+    {
+      // place a 'hole' in the array. This can later be populated with another light.
+      // don't delete the light, leave it up to the gc, otherwise
+      // the light seems to stay on and can't be removed.		
+      lightList[lightID] = null;
+
+      // we removed the light from our list, but openGL still has
+      // a light state which needs to be cleared.  Otherwise the
+      // light will still affect the scene.
+      renderer.clearLight(lightID);
+    }
+    return (lightID == -1 ? false : true);
+  }
 	
 	/**
 		@private
