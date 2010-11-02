@@ -311,7 +311,24 @@ c3dl.Collada.prototype.setTexture = function (texturePath) {
     this.sceneGraph.setTexture(texturePath);
   }
 }
+/**
+Set the texture of a collada object from an old path to a new path specified by the user
 
+ @param {string, string} oldtexturePath and newoldtexturePath
+*/
+c3dl.Collada.prototype.updateTextureByName = function (oldTexturePath,newTexturePath)
+{
+  if (this.isReady())
+  {
+    var modelPath = this.path.split("/");
+    modelPath.pop();
+    var addModelPath = "";
+    for (var i = 0; i < modelPath.length;i++){
+      addModelPath += modelPath[i] + "/";
+    }
+    this.sceneGraph.updateTextureByName(addModelPath+oldTexturePath,newTexturePath);
+  }
+}
 /**
  Sets the material of all the geometry sections (primitive collation elements 
  or primitiveSets) to this material. Thus, the entire Collada object will be

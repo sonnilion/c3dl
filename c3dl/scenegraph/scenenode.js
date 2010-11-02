@@ -158,6 +158,14 @@ c3dl.SceneNode.prototype.setTexture = function (textureName) {
   }
 }
 
+c3dl.SceneNode.prototype.updateTextureByName = function (oldTexturePath,newTexturePath)
+{
+  for (var i = 0, len = this.children.length; i < len; i++)
+  {
+    this.children[i].updateTextureByName(oldTexturePath,newTexturePath);
+  }
+}
+
 /**
  @private
  

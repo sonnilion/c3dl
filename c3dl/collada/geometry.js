@@ -210,6 +210,18 @@ c3dl.Geometry = function () {
       this.primitiveSets[i].setTexture(texture);
     }
   }
+    /**
+   @private
+   
+   @param {} oldTexturePath,newTexturePath
+   */
+  this.updateTextureByName = function (oldTexturePath,newTexturePath)
+  {
+    for (var i = 0, len = this.primitiveSets.length; i < len; i++)
+    {
+      this.primitiveSets[i].updateTextureByName(oldTexturePath,newTexturePath);
+    }
+  }
 
   /**
    @private

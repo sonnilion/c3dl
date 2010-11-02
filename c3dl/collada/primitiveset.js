@@ -224,6 +224,14 @@ c3dl.PrimitiveSet = function ()
   {
     this.texture = texture;
   }
+  this.updateTextureByName = function (oldTexturePath,newTexturePath)
+  {
+    if (this.texture) {
+      if (this.texture === oldTexturePath){
+        this.texture = newTexturePath;
+      }
+    }
+  }
   this.getLines = function ()
   {
     return this.lineList;
