@@ -46,8 +46,9 @@ c3dl.Scene = function ()
   // default point rendering to spheres to prevent possible crashing
   // when users render points which playing a DVD on OS X.
   var pointRenderingMode = c3dl.POINT_MODE_SPHERE;
-  var pauseFlag = false; //Pause the render loop
-  var exitFlag = false; // Exits the render loop
+  var pauseRender = false; //Pause the render loop
+  var exitRender = false; // Exits the render loop
+  var pauseUpdate = false; //Pause the update loop
   var canvasTag = null;
   var canvas2Dlist = [];
 
@@ -992,7 +993,7 @@ c3dl.Scene = function ()
     }
 
     // If a user wants to stop rendering, this is where it happens
-    if (exitFlag)
+    if (exitRender)
     {
       timerID = clearInterval(timerID);
       if (c3dl.debug.SHARK === true)
@@ -1002,12 +1003,16 @@ c3dl.Scene = function ()
       }
       return;
     }
-    if (!pauseFlag){
+    if (pauseUpdate) {
+      lastTimeTaken = Date.now();
+    }
+    if (!pauseUpdate) {
       // update the camera and objects
       camera.update(Date.now() - lastTimeTaken);
       thisScn.updateObjects(Date.now() - lastTimeTaken);
       lastTimeTaken = Date.now();
-
+    }
+    if (!pauseRender) {
       // The user may have added a texture to the scene in 
       // which case, the renderer needs to create them.
       if (textureQueue.length > 0)
@@ -1274,18 +1279,29 @@ c3dl.Scene = function ()
   /**
    Flags the main loop for exit.
    */
-  this.stopScene = function ()
-  {
+  this.stopScene = function () {
     // This flags the main loop to exit gracefully
-    exitFlag = true;
+    exitRender = true;
   }
-  this.unpauseScene = function ()
-  {
-    pauseFlag = false;
+  this.unpauseSceneRender = function () {
+    pauseRender = false;
   }
-    this.pauseScene = function ()
-  {
-    pauseFlag = true;
+  this.pauseSceneRender = function () {
+    pauseRender = true;
+  }
+  this.unpauseSceneUpdate = function () {
+    pauseUpdate = false;
+  }
+  this.pauseSceneUpdate = function () {
+    pauseUpdate = true;
+  }
+  this.unpauseScene = function () {
+    pauseRender = false;
+    pauseUpdate = false;
+  }
+  this.pauseScene = function () {
+    pauseRender = true;
+    pauseUpdate = true;
   }
   /**
    @private
