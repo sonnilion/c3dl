@@ -4,6 +4,7 @@ c3dl.addModel("./models/tv2.dae");
 var tv=new c3dl.Collada();
 var tv2=new c3dl.Collada();
 var timeSinceLastChange=0;
+var changed = false;
 function canvasMain(canvasName){
     scn = new c3dl.Scene();
     scn.setCanvasTag(canvasName);
@@ -31,9 +32,19 @@ function canvasMain(canvasName){
 
 function checktime(time){
     timeSinceLastChange += time; 
-    if(timeSinceLastChange >= 3000 && timeSinceLastChange < 5000){
-      tv.updateTextureByName("../images/fffffffnoCulling.jpg","images/webgl.jpg");
-      tv2.updateTextureByName("updatingTexture","images/webgl.jpg");
-      timeSinceLastChange = 11000;
+    if(timeSinceLastChange >= 3000)
+    {
+      if(changed)
+      {
+        tv.updateTextureByName("../images/webgl.jpg","../images/fffffffnoCulling.jpg");
+        changed = false;
+      }
+      else
+      {
+        tv.updateTextureByName("../images/fffffffnoCulling.jpg","../images/webgl.jpg");
+        changed = true;
+        tv2.updateTextureByName("updatingTexture","../images/webgl.jpg");
+      }
+      timeSinceLastChange = 0;
     }
 }

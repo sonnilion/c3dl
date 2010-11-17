@@ -326,7 +326,7 @@ c3dl.Collada.prototype.updateTextureByName = function (oldTexturePath,newTexture
     for (var i = 0; i < modelPath.length;i++){
       addModelPath += modelPath[i] + "/";
     }
-    this.sceneGraph.updateTextureByName(addModelPath+oldTexturePath,newTexturePath);
+    this.sceneGraph.updateTextureByName(addModelPath+oldTexturePath,addModelPath+newTexturePath);
   }
 }
 /**
