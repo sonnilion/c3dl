@@ -11,8 +11,8 @@
  @see c3dl.Light
  @augments c3dl.Light
  */
-c3dl.PositionalLight = function ()
-{
+c3dl.PositionalLight = c3dl.inherit(c3dl.Light, function () {
+  c3dl._superc(this);
   this.position = c3dl.makeVector(0, 0, 0);
 
   // use OpenGL default attenuation factors.
@@ -76,6 +76,4 @@ c3dl.PositionalLight = function ()
 	this.position[1] = vec[1];
 	this.position[2] = vec[2];
   }
-}
-
-c3dl.PositionalLight.prototype = new c3dl.Light;
+});
