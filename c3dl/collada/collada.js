@@ -201,6 +201,7 @@ c3dl.Collada.prototype.init = function (daePath) {
  
  @param {float} timeStep
  */
+/*
 c3dl.Collada.prototype.update = function (timeStep) {
   // keep checking to see if the file is done being loaded.
   if (this.isReady()) {
@@ -221,7 +222,94 @@ c3dl.Collada.prototype.update = function (timeStep) {
     }
   }
 }
-
+*/
+c3dl.Collada.prototype.update = function (timeStep) {
+  // keep checking to see if the file is done being loaded.
+  if (this.isReady()) {
+    var pos = this.sceneGraph.getPosition();
+    var rotateMat = this.sceneGraph.getRotateMat();
+    var scaleVec = this.boundingVolume.scaleVec;
+    this.boundingVolume.set(pos,rotateMat,scaleVec);
+    scaleVec=[1,1,1];
+    //ModelView stack will be used for trasform
+    c3dl.pushMatrix();
+    c3dl.loadIdentity();
+    c3dl.matrixMode(c3dl.PROJECTION);
+    c3dl.pushMatrix();
+    c3dl.loadIdentity();
+    c3dl.matrixMode(c3dl.MODELVIEW);
+    
+    var updateMover = this.sceneGraph;
+    while(updateMover) {
+      if(updateMover.children && updateMover.children.length) {
+        var flag = true;
+        scaleVec = c3dl.multiplyVectorByVector(scaleVec, updateMover.scaleVec);
+        c3dl.pushMatrix();
+        c3dl.multMatrix(updateMover.getTransform());
+        c3dl.matrixMode(c3dl.PROJECTION);
+        c3dl.pushMatrix();
+        c3dl.multMatrix(updateMover.getRotateMat());
+        c3dl.matrixMode(c3dl.MODELVIEW);
+        var velVec = c3dl.multiplyVector(updateMover.linVel, timeStep);
+        updateMover.pos = c3dl.addVectors(updateMover.pos, velVec);
+        for (var i = 0, len = updateMover.children.length; i < len; i++) {
+          if(!updateMover.children[i].updated) {
+            updateMover = updateMover.children[i];
+            i = len;
+            flag = false;
+          }
+        }
+        if (flag) {
+          c3dl.popMatrix();
+          c3dl.matrixMode(c3dl.PROJECTION);
+          c3dl.popMatrix();
+          c3dl.matrixMode(c3dl.MODELVIEW);
+          for (var i = 0, len = updateMover.children.length; i < len; i++) {
+            updateMover.children[i].updated =false;
+          }
+          updateMover.updated =true;
+          updateMover.pitch(updateMover.angVel[0] * timeStep);
+          updateMover.yaw(updateMover.angVel[1] * timeStep);
+          updateMover.roll(updateMover.angVel[2] * timeStep);
+          updateMover = updateMover.parent;
+        }
+      }
+      else{
+        if (updateMover.primitiveSets) {
+        for (var i = 0, len = updateMover.primitiveSets.length; i < len; i++) {
+          var bv = updateMover.primitiveSets[i].getBoundingVolume();
+          var trans = c3dl.peekMatrix();
+          c3dl.matrixMode(c3dl.PROJECTION);
+          var rot = c3dl.peekMatrix();
+          c3dl.matrixMode(c3dl.MODELVIEW);
+          if (bv) {
+            bv.set(new C3DL_FLOAT_ARRAY([trans[12], trans[13], trans[14]]),rot,scaleVec);
+          }
+        }
+        }
+        updateMover.updated =true;
+        updateMover = updateMover.parent;
+        c3dl.popMatrix();
+        c3dl.matrixMode(c3dl.PROJECTION);
+        c3dl.popMatrix();
+        c3dl.matrixMode(c3dl.MODELVIEW);
+      }
+    }
+    c3dl.popMatrix();
+    c3dl.popMatrix();
+    c3dl.matrixMode(c3dl.PROJECTION);
+    c3dl.popMatrix();
+    c3dl.popMatrix();
+    c3dl.matrixMode(c3dl.MODELVIEW);
+  }
+  else {
+    c3dl.debug.logError('You must call addModel("' + this.path + '"); before canvasMain.');
+    if (c3dl.ColladaManager.isFileLoaded(this.path)) {
+      // get a copy of the scenegraph so we can modify it.
+      this.sceneGraph = c3dl.ColladaManager.getSceneGraphCopy(this.path);
+    }
+  }
+}
 /**
  @private
  */

@@ -13,6 +13,7 @@ c3dl.SceneNode = c3dl.inherit(c3dl.Primitive, function () {
 
   // An array of c3dl.Actors
   this.children = [];
+  this.parent =null;
 });
 
 /**
@@ -47,6 +48,7 @@ c3dl.SceneNode.prototype.clone = function (other) {
  */
 c3dl.SceneNode.prototype.addChild = function (child) {
   this.children.push(child);
+  child.parent = this;
 }
 
 /**
