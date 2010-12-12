@@ -168,6 +168,7 @@ c3dl.Geometry = function () {
       scene.getRenderer().renderGeometry(this);
     }
   }
+  
   this.renderBoundingVolumes = function (scene) {
     // tell all the collation elements/ primitive sets to render their bounding spheres.
     for (var i = 0, len = this.primitiveSets.length; i < len; i++) {

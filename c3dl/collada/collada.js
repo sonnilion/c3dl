@@ -231,27 +231,28 @@ c3dl.Collada.prototype.update = function (timeStep) {
     var scaleVec = this.boundingVolume.scaleVec;
     this.boundingVolume.set(pos,rotateMat,scaleVec);
     scaleVec=[1,1,1];
-    //ModelView stack will be used for trasform
+    //ModelView stack will be used for trasform mat
     c3dl.pushMatrix();
     c3dl.loadIdentity();
+     //ModelView stack will be used for rotation mat
     c3dl.matrixMode(c3dl.PROJECTION);
     c3dl.pushMatrix();
     c3dl.loadIdentity();
     c3dl.matrixMode(c3dl.MODELVIEW);
-    
     var updateMover = this.sceneGraph;
     while(updateMover) {
       if(updateMover.children && updateMover.children.length) {
         var flag = true;
-        scaleVec = c3dl.multiplyVectorByVector(scaleVec, updateMover.scaleVec);
-        c3dl.pushMatrix();
-        c3dl.multMatrix(updateMover.getTransform());
-        c3dl.matrixMode(c3dl.PROJECTION);
-        c3dl.pushMatrix();
-        c3dl.multMatrix(updateMover.getRotateMat());
-        c3dl.matrixMode(c3dl.MODELVIEW);
-        var velVec = c3dl.multiplyVector(updateMover.linVel, timeStep);
-        updateMover.pos = c3dl.addVectors(updateMover.pos, velVec);
+        if (!updateMover.pushed) {
+          scaleVec = c3dl.multiplyVectorByVector(scaleVec, updateMover.scaleVec);
+          c3dl.pushMatrix();
+          c3dl.multMatrix(updateMover.getTransform());
+          c3dl.matrixMode(c3dl.PROJECTION);
+          c3dl.pushMatrix();
+          c3dl.multMatrix(updateMover.getRotateMat());
+          c3dl.matrixMode(c3dl.MODELVIEW);
+          updateMover.pushed = true;
+        }
         for (var i = 0, len = updateMover.children.length; i < len; i++) {
           if(!updateMover.children[i].updated) {
             updateMover = updateMover.children[i];
@@ -264,10 +265,14 @@ c3dl.Collada.prototype.update = function (timeStep) {
           c3dl.matrixMode(c3dl.PROJECTION);
           c3dl.popMatrix();
           c3dl.matrixMode(c3dl.MODELVIEW);
+          scaleVec = c3dl.divideVectorByVector(scaleVec, updateMover.scaleVec);
           for (var i = 0, len = updateMover.children.length; i < len; i++) {
-            updateMover.children[i].updated =false;
+            updateMover.children[i].updated =null;
           }
           updateMover.updated =true;
+          updateMover.pushed = null;
+          var velVec = c3dl.multiplyVector(updateMover.linVel, timeStep);
+          updateMover.pos = c3dl.addVectors(updateMover.pos, velVec);
           updateMover.pitch(updateMover.angVel[0] * timeStep);
           updateMover.yaw(updateMover.angVel[1] * timeStep);
           updateMover.roll(updateMover.angVel[2] * timeStep);
@@ -276,23 +281,19 @@ c3dl.Collada.prototype.update = function (timeStep) {
       }
       else{
         if (updateMover.primitiveSets) {
-        for (var i = 0, len = updateMover.primitiveSets.length; i < len; i++) {
-          var bv = updateMover.primitiveSets[i].getBoundingVolume();
-          var trans = c3dl.peekMatrix();
-          c3dl.matrixMode(c3dl.PROJECTION);
-          var rot = c3dl.peekMatrix();
-          c3dl.matrixMode(c3dl.MODELVIEW);
-          if (bv) {
-            bv.set(new C3DL_FLOAT_ARRAY([trans[12], trans[13], trans[14]]),rot,scaleVec);
+          for (var i = 0, len = updateMover.primitiveSets.length; i < len; i++) {
+            var bv = updateMover.primitiveSets[i].getBoundingVolume();
+            var trans = c3dl.peekMatrix();
+            c3dl.matrixMode(c3dl.PROJECTION);
+            var rot = c3dl.peekMatrix();
+            c3dl.matrixMode(c3dl.MODELVIEW);
+            if (bv) {
+              bv.set(new C3DL_FLOAT_ARRAY([trans[12], trans[13], trans[14]]),rot,scaleVec);
+            }
           }
-        }
         }
         updateMover.updated =true;
         updateMover = updateMover.parent;
-        c3dl.popMatrix();
-        c3dl.matrixMode(c3dl.PROJECTION);
-        c3dl.popMatrix();
-        c3dl.matrixMode(c3dl.MODELVIEW);
       }
     }
     c3dl.popMatrix();
@@ -328,7 +329,7 @@ c3dl.Collada.prototype.setSceneGraph = function (sg) {
  @param {context} glCanvas3D
  @param {Scene} scene
  */
- 
+ /*
 c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
   if (this.sceneGraph && this.isVisible()) {
     // tell the root to render. The render() calls
@@ -348,19 +349,22 @@ c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
     }
   }
 }
-/*
+*/
 c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
   if (this.sceneGraph && this.isVisible()) {
     // tell the root to render. The render() calls
     // will propogate down the graph.
     var updateMover = this.sceneGraph;
     while(updateMover) {
-      if(updateMover.children && updateMover.children.length&& updateMover instanceof c3dl.SceneNode) {
-        var flag = true; 
-        c3dl.pushMatrix();
-        //c3dl.multMatrix(updateMover.getTransform());
+      if(updateMover.children && updateMover.children.length) {
+        var flag = true;
+        if (!updateMover.rpushed) {
+          c3dl.pushMatrix();
+          c3dl.multMatrix(updateMover.getTransform());
+          updateMover.rpushed = true;
+        }
         for (var i = 0, len = updateMover.children.length; i < len; i++) {
-          if(!updateMover.children[i].updated) {
+          if(!updateMover.children[i].rupdated) {
             updateMover = updateMover.children[i];
             i = len;
             flag = false;
@@ -369,11 +373,11 @@ c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
         if (flag) {
           c3dl.popMatrix();
           for (var i = 0, len = updateMover.children.length; i < len; i++) {
-            updateMover.children[i].updated =false;
+            updateMover.children[i].rupdated =null;
           }
-          updateMover.updated =true;
+          updateMover.rupdated =true;
+          updateMover.rpushed = null;
           updateMover = updateMover.parent;
-          
         }
       }
       else{
@@ -396,12 +400,12 @@ c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
             scene.getRenderer().renderGeometry(updateMover);
           }
         }
-        updateMover.updated =true;
+        updateMover.rupdated =true;
         updateMover = updateMover.parent;
-        c3dl.popMatrix();
       }
     }
     c3dl.popMatrix();
+
     //this.sceneGraph.render(glCanvas3D, scene);
     if (scene.getBoundingVolumeVisibility()) {
       this.sceneGraph.renderBoundingVolumes(scene);
@@ -416,7 +420,8 @@ c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
       this.boundingVolume.renderSphere(scene);
     }
   }
-} */
+} 
+
 /**
  Scale the the scenegraph's root node.
  
