@@ -328,6 +328,7 @@ c3dl.Collada.prototype.setSceneGraph = function (sg) {
  @param {context} glCanvas3D
  @param {Scene} scene
  */
+ 
 c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
   if (this.sceneGraph && this.isVisible()) {
     // tell the root to render. The render() calls
@@ -347,7 +348,75 @@ c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
     }
   }
 }
-
+/*
+c3dl.Collada.prototype.render = function (glCanvas3D, scene) {
+  if (this.sceneGraph && this.isVisible()) {
+    // tell the root to render. The render() calls
+    // will propogate down the graph.
+    var updateMover = this.sceneGraph;
+    while(updateMover) {
+      if(updateMover.children && updateMover.children.length&& updateMover instanceof c3dl.SceneNode) {
+        var flag = true; 
+        c3dl.pushMatrix();
+        //c3dl.multMatrix(updateMover.getTransform());
+        for (var i = 0, len = updateMover.children.length; i < len; i++) {
+          if(!updateMover.children[i].updated) {
+            updateMover = updateMover.children[i];
+            i = len;
+            flag = false;
+          }
+        }
+        if (flag) {
+          c3dl.popMatrix();
+          for (var i = 0, len = updateMover.children.length; i < len; i++) {
+            updateMover.children[i].updated =false;
+          }
+          updateMover.updated =true;
+          updateMover = updateMover.parent;
+          
+        }
+      }
+      else{
+        if (updateMover.primitiveSets) {
+          if (updateMover.getPrimitiveSets()[0].getType() === "lines") {
+            //scene.getRenderer().renderLines(this.getPrimitiveSets()[0].getLines());
+          }
+          else {
+            // The first time this is rendered, setup VBOs.
+            if (updateMover.firstTimeRender == true) {
+              // iterate over the primitive sets and setup their VBOs
+              for (var i = 0, len = updateMover.primitiveSets.length; i < len; i++) {
+                updateMover.primitiveSets[i].setupVBO(glCanvas3D);
+              }
+              updateMover.firstTimeRender = false;
+            }
+            for (var i = 0, len = updateMover.primitiveSets.length; i < len; i++) {
+              scene.getRenderer().texManager.updateTexture(updateMover.primitiveSets[i].texture);
+            }
+            scene.getRenderer().renderGeometry(updateMover);
+          }
+        }
+        updateMover.updated =true;
+        updateMover = updateMover.parent;
+        c3dl.popMatrix();
+      }
+    }
+    c3dl.popMatrix();
+    //this.sceneGraph.render(glCanvas3D, scene);
+    if (scene.getBoundingVolumeVisibility()) {
+      this.sceneGraph.renderBoundingVolumes(scene);
+    }
+    if (this.renderObb) {
+      this.boundingVolume.renderObb(scene);
+    }
+    if (this.renderAabb) {
+      this.boundingVolume.renderAabb(scene);
+    }
+    if (this.renderBoundingSphere) {
+      this.boundingVolume.renderSphere(scene);
+    }
+  }
+} */
 /**
  Scale the the scenegraph's root node.
  
