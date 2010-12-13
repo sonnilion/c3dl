@@ -1,6 +1,10 @@
 
 c3dl.AABB = function () {  
   this.lineList =[];
+  for (var i = 0; i <12; i++) {
+    this.lineList[i] = new c3dl.Line();
+    this.lineList[i].setWidth(2);
+  }  
   this.maxMins= [];
   this.originalBoxVerts = [];
   this.boxVerts = [];
@@ -17,11 +21,7 @@ c3dl.AABB = function () {
     this.maxMins[3] = maxMins[3];  
     this.maxMins[4] = maxMins[4]; 
     this.maxMins[5] = maxMins[5];     
-  
-    for (var i = 0; i <12; i++) {
-      this.lineList[i] = new c3dl.Line();
-      this.lineList[i].setWidth(2);
-    }  
+
     
     //F top left 
     this.originalBoxVerts[0] = c3dl.makeVector(maxMins[1], maxMins[3], maxMins[5]);
@@ -137,10 +137,16 @@ c3dl.AABB = function () {
   
   this.getCopy = function () {
     var copy = new c3dl.AABB();
-    copy.boxVerts = c3dl.copyObj(this.boxVerts);
-    copy.originalBoxVerts = c3dl.copyObj(this.originalBoxVerts);
-    copy.lineList = c3dl.copyObj(this.lineList);
-    copy.maxMins= c3dl.copyObj(this.maxMins);
+    for (var i = 0; i <8; i++) {
+      copy.originalBoxVerts[i] = c3dl.copyVector(this.originalBoxVerts[i]);
+      copy.boxVerts[i] = c3dl.copyVector(this.boxVerts[i]);
+    }
+    copy.maxMins[0] = this.maxMins[0] 
+    copy.maxMins[1] = this.maxMins[1] 
+    copy.maxMins[2] = this.maxMins[2] 
+    copy.maxMins[3] = this.maxMins[3]  
+    copy.maxMins[4] = this.maxMins[4] 
+    copy.maxMins[5] = this.maxMins[5];
     return copy;
   }
   

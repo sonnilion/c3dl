@@ -68,7 +68,7 @@ c3dl.Scene = function ()
   var FPS_LastTimeTaken = Date.now();
 
   // This will be the color of the background if the user does not change it.
-  var backgroundColor = [c3dl.DEFAULT_BG_RED, c3dl.DEFAULT_BG_GREEN, c3dl.DEFAULT_BG_BLUE];
+  var backgroundColor = c3dl.makeVector(c3dl.DEFAULT_BG_RED, c3dl.DEFAULT_BG_GREEN, c3dl.DEFAULT_BG_BLUE);
   var ambientLight = c3dl.makeVector(1, 1, 1);
   var thisScn = null;
 
@@ -736,7 +736,7 @@ c3dl.Scene = function ()
    */
   this.getBackgroundColor = function ()
   {
-    return c3dl.copyObj(backgroundColor);
+    return c3dl.copyVector(backgroundColor);
   }
 
   /**

@@ -413,3 +413,10 @@ try{
 
 const C3DL_FLOAT_ARRAY = Float32Array;
 const C3DL_UINT_ARRAY = Uint8Array;
+
+c3dl.mat1 = new C3DL_FLOAT_ARRAY(16);
+c3dl.mat2 = new C3DL_FLOAT_ARRAY(16);
+c3dl.mat3 = new C3DL_FLOAT_ARRAY(16);
+c3dl.vec1 = new C3DL_FLOAT_ARRAY(3);
+c3dl.vec2 = new C3DL_FLOAT_ARRAY(3);
+c3dl.vec3 = new C3DL_FLOAT_ARRAY(3);

@@ -37,7 +37,6 @@ function canvasMain(canvasName){
     obj3.init("duck.dae");
     obj3.centerObject();
     obj3.setSize(1,1,1);
-
     obj3.setName("SmallDuck")
     scn.addObjectToScene(obj3);
     cam = new c3dl.FreeCamera();

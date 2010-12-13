@@ -44,7 +44,7 @@ c3dl.matrixMode = function (mode)
  */
 c3dl.pushMatrix = function ()
 {
-  c3dl.CurrentStackPointer.push(c3dl.peekMatrix());
+  c3dl.CurrentStackPointer.push(c3dl.copyMatrix(c3dl.peekMatrix()));
 }
 
 
@@ -104,7 +104,8 @@ c3dl.popMatrix = function ()
  */
 c3dl.multMatrix = function (matrix)
 {
-  c3dl.loadMatrix(c3dl.multiplyMatrixByMatrix(c3dl.peekMatrix(), matrix));
+  c3dl.copyMatrix(c3dl.peekMatrix(), c3dl.mat1);
+  c3dl.loadMatrix(c3dl.multiplyMatrixByMatrix(c3dl.mat1, matrix,c3dl.peekMatrix()));
 }
 
 

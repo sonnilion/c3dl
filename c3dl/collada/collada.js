@@ -244,7 +244,7 @@ c3dl.Collada.prototype.update = function (timeStep) {
       if(updateMover.children && updateMover.children.length) {
         var flag = true;
         if (!updateMover.pushed) {
-          scaleVec = c3dl.multiplyVectorByVector(scaleVec, updateMover.scaleVec);
+          c3dl.multiplyVectorByVector(scaleVec, updateMover.scaleVec, scaleVec);
           c3dl.pushMatrix();
           c3dl.multMatrix(updateMover.getTransform());
           c3dl.matrixMode(c3dl.PROJECTION);
@@ -265,14 +265,14 @@ c3dl.Collada.prototype.update = function (timeStep) {
           c3dl.matrixMode(c3dl.PROJECTION);
           c3dl.popMatrix();
           c3dl.matrixMode(c3dl.MODELVIEW);
-          scaleVec = c3dl.divideVectorByVector(scaleVec, updateMover.scaleVec);
+          c3dl.divideVectorByVector(scaleVec, updateMover.scaleVec, scaleVec);
           for (var i = 0, len = updateMover.children.length; i < len; i++) {
             updateMover.children[i].updated =null;
           }
           updateMover.updated =true;
           updateMover.pushed = null;
-          var velVec = c3dl.multiplyVector(updateMover.linVel, timeStep);
-          updateMover.pos = c3dl.addVectors(updateMover.pos, velVec);
+          c3dl.multiplyVector(updateMover.linVel, timeStep, c3dl.vec1);
+          c3dl.addVectors(updateMover.pos, c3dl.vec1, updateMover.pos);
           updateMover.pitch(updateMover.angVel[0] * timeStep);
           updateMover.yaw(updateMover.angVel[1] * timeStep);
           updateMover.roll(updateMover.angVel[2] * timeStep);
