@@ -152,8 +152,6 @@ c3dl.POINT = 2;
  */
 c3dl.PARTICLE_SYSTEM = 3;
 
-c3dl.SHAPE = 4;
-
 ////////////////////// SCENE /////////////////////////
 /**
  @constant

@@ -908,7 +908,6 @@ c3dl.Scene = function ()
     case c3dl.POINT:
     case c3dl.PARTICLE_SYSTEM:
     case c3dl.COLLADA:
-    case c3dl.SHAPE:
       objList.push(obj);
       return true;
     }
@@ -1090,7 +1089,6 @@ c3dl.Scene = function ()
           objList[i].update(timeElapsed);
           break;
         case c3dl.COLLADA:
-        case c3dl.SHAPE:
           objList[i].update(timeElapsed);
           //Collision
           if (collision) {
@@ -1180,7 +1178,7 @@ c3dl.Scene = function ()
         particleSystems.push(objList[i]);
       }
 
-      if (objList[i].getObjectType() == c3dl.COLLADA || objList[i].getObjectType() == c3dl.SHAPE)
+      if (objList[i].getObjectType() == c3dl.COLLADA)
       {
         var checker;	
         var cam = this.getCamera();

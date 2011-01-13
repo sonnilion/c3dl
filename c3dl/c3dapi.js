@@ -74,12 +74,6 @@ c3dl_require('actors/primitive.js');
 c3dl_require('actors/point.js');
 c3dl_require('actors/line.js');
 
-//shapes
-c3dl_require('shapes/shape.js');
-c3dl_require('shapes/box.js');
-c3dl_require('shapes/plane.js');
-c3dl_require('shapes/sphere.js');
-
 //frustum culling
 c3dl_require('frustum_culling/frustum.js');
 c3dl_require('frustum_culling/plane.js');
