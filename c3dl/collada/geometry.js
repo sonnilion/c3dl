@@ -246,4 +246,14 @@ c3dl.Geometry = function () {
       }
     }
   }
+  this.getTriangleCount= function() {
+    var triCount = 0;
+    for (var i = 0, len = this.primitiveSets.length; i < len; i++)
+    {
+      if (this.getPrimitiveSets()[i].getType()!=="lines") {
+        triCount += this.primitiveSets[i].getVertices().length/3;
+      }
+    }
+    return triCount;
+  }
 }

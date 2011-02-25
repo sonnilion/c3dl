@@ -302,3 +302,18 @@ c3dl.SceneNode.prototype.center = function (realposition) {
   this.addChild(temp);
   temp.setTransform(c3dl.makePoseMatrix([1, 0, 0], [0, 1, 0], [0, 0, 1], [-realposition[0], -realposition[1], -realposition[2]]));
 }
+
+c3dl.SceneNode.prototype.getTriangleCount = function (triCount)
+{   
+  for (var i = 0; i < this.children.length; i++)
+  {  
+    if (this.children[i] instanceof c3dl.SceneNode) { 
+      triCount = this.children[i].getTriangleCount(triCount);
+    }
+    else if (this.children[i] instanceof c3dl.Geometry) { 
+      triCount+= this.children[i].getTriangleCount();
+		}
+   
+  }
+  return triCount;
+}

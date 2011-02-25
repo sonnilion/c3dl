@@ -820,3 +820,8 @@ c3dl.Collada.prototype.centerObject = function () {
   c3dl.popMatrix();
   this.setDirty(true);
 }
+
+c3dl.Collada.prototype.getTriangleCount = function () {   
+  return this.sceneGraph.getTriangleCount(0);
+}
+
