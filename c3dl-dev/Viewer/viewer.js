@@ -45,6 +45,7 @@ function canvasViewer(canvasName) {
     scnViewer.setMouseCallback(mouseUp, mouseDown, mouseMove, mouseWheel);
   }
   objectViewing.centerObject();
+  objectViewing.setStatic(true);
   document.getElementById('triCount').innerHTML = "Triangle Count:" + objectViewing.getTriangleCount();
     
   objectViewing.getLength();
