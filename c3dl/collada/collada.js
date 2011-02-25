@@ -585,3 +585,8 @@ c3dl.Collada.prototype.centerObject = function () {
   this.sceneGraph.center(this.boundingbox.realposition);
   this.boundingbox.center();
 }
+
+c3dl.Collada.prototype.getTriangleCount = function ()
+{   
+  return this.sceneGraph.getTriangleCount(0);
+}
