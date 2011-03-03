@@ -56,7 +56,7 @@ function effect_test(canvasName)
 
   // GREYSCALE
   greyscaleEffect = new c3dl.Effect();
-  greyscaleEffect.init(c3dl.effects.GREYSCALE);
+  greyscaleEffect.init(c3dl.effects.LIGHT_SOURCE);
 
   teapots.push(new c3dl.Collada());
   teapots[0].init("models/teapot.dae");

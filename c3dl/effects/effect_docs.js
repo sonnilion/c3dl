@@ -15,6 +15,7 @@ c3dl.effects =
  */
 c3dl.effects.STD_EFFECT = 0;
 
+c3dl.effects.LIGHTSOURCE = 0;
 
 c3dl.effects.SOLID_COLOR = 0;
 /**
