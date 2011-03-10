@@ -518,6 +518,18 @@ c3dl.Collada.prototype.updateTextureByName = function (oldTexturePath,newTexture
     }
   }
 }
+
+c3dl.Collada.prototype.getTextures = function () {
+  if (this.isReady()) {
+    return this.sceneGraph.getTextures();
+  }
+}
+
+c3dl.Collada.prototype.getPrimitiveSets = function () {
+  if (this.isReady()) {
+    return this.sceneGraph.getPrimitiveSets();
+  }
+}
 /**
  Sets the material of all the geometry sections (primitive collation elements 
  or primitiveSets) to this material. Thus, the entire Collada object will be
@@ -610,7 +622,7 @@ c3dl.Collada.prototype.roll = function (angle) {
  @private
  */
 c3dl.Collada.prototype.getCopy = function () {
-  var collada = new Collada();
+  var collada = new c3dl.Collada();
   collada.clone(this);
   return collada;
 }
@@ -647,7 +659,7 @@ c3dl.Collada.prototype.rayIntersectsEnclosures = function (rayOrigin, rayDir) {
   var result;
   if (c3dl.rayIntersectsSphere(rayOrigin, rayDir, this.boundingVolume.getPosition(), this.boundingVolume.getRadius()) && 
   c3dl.rayAABBIntersect(rayOrigin, rayDir, this.boundingVolume.aabb.maxMins) &&
-  c3dl.rayOBBIntersect(rayOrigin, rayDir, this.boundingVolume.getPosition(), this.boundingVolume.getAxis(),this.boundingVolume.getSizeInAxis())) {
+  c3dl.rayOBBIntersect(rayOrigin, rayDir, this.boundingVolume.obb.boxVerts, this.boundingVolume.getAxis())) {
     result = this.sceneGraph.rayIntersectsEnclosures(rayOrigin, rayDir);
   }
   else {
