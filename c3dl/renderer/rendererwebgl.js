@@ -594,13 +594,12 @@ c3dl.WebGL = c3dl.inherit(c3dl.Renderer, function () {
 
     // Light Source
     c3dl.effects.LIGHTSOURCE = new c3dl.EffectTemplate();
-    c3dl.effects.LIGHTSOURCE.addVertexShader(c3dl.material_vs + c3dl.light_vs + c3dl.light_source_vs);
+    c3dl.effects.LIGHTSOURCE.addVertexShader(c3dl.material_vs);
+    c3dl.effects.LIGHTSOURCE.addVertexShader(c3dl.light_vs);
+    c3dl.effects.LIGHTSOURCE.addVertexShader(c3dl.light_source_vs);
     c3dl.effects.LIGHTSOURCE.addFragmentShader(c3dl.model_fs);
-    c3dl.effects.LIGHTSOURCE.setRenderingCallback(c3dl.std_callback);
+    c3dl.effects.LIGHTSOURCE.setRenderingCallback(c3dl.light_source_callback);
     c3dl.effects.LIGHTSOURCE.init();
-    var prog = this.createProgram(c3dl.material_vs + c3dl.light_vs + c3dl.light_source_vs, c3dl.model_fs);
-    c3dl.effects.LIGHTSOURCE.addProgramObject(prog);
-    this.programsWithLights.push(c3dl.effects.LIGHTSOURCE.getProgramID(this.ID));
     
     this.texManager = new c3dl.TextureManager(glCanvas3D);
 

@@ -157,6 +157,7 @@ c3dl_require('shaders/model/solid_color/solid_color_vs.js');
 c3dl_require('shaders/model/solid_color/solid_color_fs.js');
 c3dl_require('shaders/model/solid_color/solid_color_callback.js');
 
+c3dl_require('shaders/model/light_source/light_source_callback.js');
 c3dl_require('shaders/model/light_source/light_source_vs.js');
 
 //effects and instance effects
