@@ -540,18 +540,6 @@ c3dl.Collada.prototype.getPrimitiveSets = function () {
     return this.sceneGraph.getPrimitiveSets();
   }
 }
-
-c3dl.Collada.prototype.getTextures = function () {
-  if (this.isReady()) {
-    return this.sceneGraph.getTextures();
-  }
-}
-
-c3dl.Collada.prototype.getPrimitiveSets = function () {
-  if (this.isReady()) {
-    return this.sceneGraph.getPrimitiveSets();
-  }
-}
 /**
  Sets the material of all the geometry sections (primitive collation elements 
  or primitiveSets) to this material. Thus, the entire Collada object will be
