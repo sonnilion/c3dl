@@ -59,3 +59,4 @@ c3dl.Plane.prototype.clone = function (other) {
   this.primitiveSets[0] = other.primitiveSets[0].getCopy();
   this.shape = other.shape.getCopy();
 }
+
