@@ -820,3 +820,7 @@ c3dl.Collada.prototype.centerObject = function () {
   c3dl.popMatrix();
   this.setDirty(true);
 }
+
+c3dl.Collada.prototype.getFaces = function () {   
+  return this.sceneGraph.getFaces(0);
+}
