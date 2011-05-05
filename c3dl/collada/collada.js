@@ -886,3 +886,7 @@ c3dl.Collada.prototype.centerObject = function () {
 c3dl.Collada.prototype.getLoadedProgress = function () {
   return c3dl.ColladaManager.loadProgress(this.path);
 }
+
+c3dl.Collada.prototype.getFaces = function () {   
+  return this.sceneGraph.getFaces(0);
+}

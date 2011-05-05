@@ -338,3 +338,15 @@ c3dl.SceneNode.prototype.getPrimitiveSets = function () {
   }
   return primitiveSets;
 }
+
+c3dl.SceneNode.prototype.getFaces = function (faces) {   
+  for (var i = 0; i < this.children.length; i++) {  
+    if (this.children[i] instanceof c3dl.SceneNode) { 
+      faces = this.children[i].getFaces(faces);
+    }
+    else if (this.children[i] instanceof c3dl.Geometry) { 
+      faces+= this.children[i].getFaces();
+		}
+  }
+  return faces;
+}
